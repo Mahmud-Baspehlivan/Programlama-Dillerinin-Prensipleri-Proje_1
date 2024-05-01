@@ -9,7 +9,6 @@ struct PIRE {
 };
 
 char* pire_gorunum(struct CANLI* canli);
-void pire_hayatta_kal(struct CANLI* canli);
 void pire_gorunum_degistir(struct CANLI* canli, GORUNUM_FONKSIYONU yeni_gorunum);
 struct PIRE* pire_olustur(int deger);
 void pire_sil(struct PIRE* pire);

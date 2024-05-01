@@ -4,21 +4,11 @@
 #include <stdlib.h>
 
 char* bitki_gorunum(struct CANLI* canli) {
-    char* gorunum = malloc(sizeof(char) * 2);
-    gorunum[0] = 'B';
-    gorunum[1] = '\0';
-    return gorunum;
+        return "B";
 }
 
 char* bitki_yenildi_gorunum(struct CANLI* canli) {
-    char* gorunum = malloc(sizeof(char) * 2);
-    gorunum[0] = 'X';
-    gorunum[1] = '\0';
-    return gorunum;
-}
-
-void bitki_hayatta_kal(struct CANLI* canli) {
-    // Bitki hayatta kalma mantığı...
+        return "X";
 }
 
 void bitki_gorunum_degistir(struct CANLI* canli, GORUNUM_FONKSIYONU yeni_gorunum) {
@@ -27,7 +17,7 @@ void bitki_gorunum_degistir(struct CANLI* canli, GORUNUM_FONKSIYONU yeni_gorunum
 
 struct BITKI* bitki_olustur(int deger) {
     struct BITKI* bitki = malloc(sizeof(struct BITKI));
-    bitki->canli = *canli_olustur(deger, bitki_gorunum, bitki_hayatta_kal, bitki_gorunum_degistir);
+    bitki->canli = *canli_olustur(deger, bitki_gorunum, bitki_gorunum_degistir);
     return bitki;
 }
 

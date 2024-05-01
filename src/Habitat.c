@@ -31,7 +31,7 @@ void habitat_doldur(struct HABITAT *habitat, char *dosyaAdi)
     }
 
     int satirSayisi = 0, sutunSayisi = 0;
-    char buffer[100];
+    char buffer[100000];
     fgets(buffer, sizeof(buffer), fp); // İlk satırı oku (sutun sayısını içerir)
     char *token = strtok(buffer, " ");
     while (token != NULL)
@@ -103,82 +103,190 @@ void habitat_yazdir(struct HABITAT *habitat)
 }
 
 void habitat_surec(struct HABITAT* habitat) {
-    int i = 0, j = 0;
+    int i = 0, j = 0, k = 0, z = 0;
     while (i < habitat->satirSayisi && j < habitat->sutunSayisi) {
-        struct CANLI* canli1 = habitat->canlilar[i][j];
+        struct CANLI* canli1 = habitat->canlilar[k][z];
         struct CANLI* canli2 = NULL;
         if (j + 1 < habitat->sutunSayisi) {
             canli2 = habitat->canlilar[i][j + 1];
+            printf("%c(%i,%i)\n", canli1->gorunum, k, z);
+            printf("%c(%i,%i)\n", canli2->gorunum, i, j+1);
         } else if (i + 1 < habitat->satirSayisi) {
             i++;
             j = 0;
             canli2 = habitat->canlilar[i][j];
+            printf("%c(%i,%i)\n", canli1->gorunum, k, z);
+            printf("%c(%i,%i)\n", canli2->gorunum, i, j);
         }
-
+        
         if (canli2 != NULL) {
-            void (*hayatta_kal1)(struct CANLI*) = canli1->hayatta_kal;
-            void (*hayatta_kal2)(struct CANLI*) = canli2->hayatta_kal;
             void (*gorunum_degistir1)(struct CANLI*, GORUNUM_FONKSIYONU) = canli1->gorunum_degistir;
             void (*gorunum_degistir2)(struct CANLI*, GORUNUM_FONKSIYONU) = canli2->gorunum_degistir;
 
-            hayatta_kal1(canli2);
-            hayatta_kal2(canli1);
+            if (canli1->gorunum == canli2->gorunum) {
+                // Karşılaşan karakterler aynı ise, veri.txt'deki sayısal değeri büyük olan kazanır
+                // Eğer sayısal değerler eşitse, matrisin son elemanına olan uzaklıklara bakılarak daha yakın olan ölecek
+                int canli1_sayi = canli1->deger;
+                int canli2_sayi = canli2->deger;
 
-            if (canli1->deger == 0) {
-                gorunum_degistir1(canli1, bitki_gorunum);
-            }
-            if (canli2->deger == 0) {
-                gorunum_degistir2(canli2, bitki_gorunum);
-            }
+                if (canli1_sayi > canli2_sayi) {
+                    gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                    j++;
+                } else if (canli1_sayi < canli2_sayi) {
+                    gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                    if(i == k){
+                        j++;
+                        z=j;
+                        canli1 = habitat->canlilar[k][z];
+                    }else if(j==0){
+                        k=i;
+                        z=j;
+                        canli1 = habitat->canlilar[k][z];
+                    } else{
+                        k=i;
+                        z=++j;
+                        canli1 = habitat->canlilar[k][z];
+                    }   
+                } else {
+                    // Eğer sayısal değerler eşitse, matrisin son elemanına olan uzaklıklara bakılarak daha yakın olan ölecek
+                    int son_satir = habitat->satirSayisi - 1;
+                    int son_sutun = habitat->sutunSayisi - 1;
+                    int uzaklik_canli1 = abs(k - son_satir) + abs(z - son_sutun);
+                    int uzaklik_canli2 = abs(i - son_satir) + abs(j - son_sutun);
 
+                    if (uzaklik_canli1 < uzaklik_canli2) {
+                        gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                        if(i == k){
+                            j++;
+                            z=j;
+                            canli1 = habitat->canlilar[k][z];
+                        }else if(j==0){
+                            k=i;
+                            z=j;
+                            canli1 = habitat->canlilar[k][z];
+                        } else{
+                            k=i;
+                            z=++j;
+                            canli1 = habitat->canlilar[k][z];
+                        }
+                    } else if (uzaklik_canli1 > uzaklik_canli2) {
+                        gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                        j++;
+                    } else {
+                        // Eğer uzaklıklar da eşitse, yatay konumlarına bakarak hangisi daha aşağıda ise onun ölmesini sağla
+                        if (i > k) {
+                            gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                            if(i == k){
+                                j++;
+                                z=j;
+                                canli1 = habitat->canlilar[k][z];
+                            }else if(j==0){
+                                k=i;
+                                z=j;
+                                canli1 = habitat->canlilar[k][z];
+                            } else{
+                                k=i;
+                                z=++j;
+                                canli1 = habitat->canlilar[k][z];
+                            }
+                        } else {
+                            gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                            j++;
+                        }
+                    }
+                }
+            } else{
+                    
             if (canli1->gorunum == 'C') {
-                if (canli2->gorunum == 'B') {
-                    gorunum_degistir2(canli2, bitki_gorunum);
+                if (canli2->gorunum == 'B' || canli2->gorunum == 'P') {
+                    gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                    j++;
                 } else if (canli2->gorunum == 'S') {
-                    gorunum_degistir1(canli1, bocek_gorunum);
+                    gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                    
+                    if(i == k){
+                        j++;
+                        z=j;
+                        canli1 = habitat->canlilar[k][z];
+                    }else if(j==0){
+                        k=i;
+                        z=j;
+                        canli1 = habitat->canlilar[k][z];
+                    } else{
+                        k=i;
+                        z=++j;
+                        canli1 = habitat->canlilar[k][z];
+                    }
                 }
             } else if (canli1->gorunum == 'B') {
-                if (canli2->gorunum == 'P') {
-                    // Bitki, Pire'yi yemez
-                } else if (canli2->gorunum == 'S') {
-                    gorunum_degistir2(canli2, sinek_gorunum);
+                if (canli2->gorunum == 'P' || canli2->gorunum == 'S') {
+                    gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                    j++;
+                } else if (canli2->gorunum == 'C') {
+                    gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                    if(i == k){
+                        j++;
+                        z=j;
+                        canli1 = habitat->canlilar[k][z];
+                    }else if(j==0){
+                        k=i;
+                        z=j;
+                        canli1 = habitat->canlilar[k][z];
+                    } else{
+                        k=i;
+                        z=++j;
+                        canli1 = habitat->canlilar[k][z];
+                    }
                 }
             } else if (canli1->gorunum == 'P') {
-                if (canli2->gorunum == 'B') {
-                    gorunum_degistir1(canli2, bitki_gorunum);
-                } else if (canli2->gorunum == 'C') {
-                    gorunum_degistir2(canli2, bocek_gorunum);
+                if (canli2->gorunum == 'C' || canli2->gorunum == 'B' || canli2->gorunum == 'S') {
+                    gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                    if(i == k){
+                        j++;
+                        z=j;
+                        canli1 = habitat->canlilar[k][z];
+                    }else if(j==0){
+                        k=i;
+                        z=j;
+                        canli1 = habitat->canlilar[k][z];
+                    } else{
+                        k=i;
+                        z=++j;
+                        canli1 = habitat->canlilar[k][z];
+                    }
                 }
             } else if (canli1->gorunum == 'S') {
                 if (canli2->gorunum == 'B') {
-                    gorunum_degistir1(canli2, bitki_gorunum);
-                } else if (canli2->gorunum == 'C') {
-                    gorunum_degistir1(canli1, sinek_gorunum);
+                    gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                    if(i == k){
+                        j++;
+                        z=j;
+                        canli1 = habitat->canlilar[k][z];
+                    }else if(j==0){
+                        k=i;
+                        z=j;
+                        canli1 = habitat->canlilar[k][z];
+                    } else{
+                        k=i;
+                        z=++j;
+                        canli1 = habitat->canlilar[k][z];
+                    }
+                } else if (canli2->gorunum == 'C' || canli2->gorunum == 'P') {
+                    gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                    j++;
                 }
             }
-
-            if (canli1->deger > canli2->deger) {
-                gorunum_degistir2(canli2, bitki_gorunum);
-            } else if (canli1->deger < canli2->deger) {
-                gorunum_degistir1(canli1, bitki_gorunum);
-            } else {
-                int satirFarki1 = abs(i - habitat->satirSayisi);
-                int satirFarki2 = abs(i - habitat->satirSayisi);
-                int sutunFarki1 = abs(j - habitat->sutunSayisi);
-                int sutunFarki2 = abs((j + 1) - habitat->sutunSayisi);
-                int mesafe1 = satirFarki1 + sutunFarki1;
-                int mesafe2 = satirFarki2 + sutunFarki2;
-                if (mesafe1 < mesafe2) {
-                    gorunum_degistir2(canli2, bitki_gorunum);
-                } else {
-                    gorunum_degistir1(canli1, bitki_gorunum);
-                }
-            }
+            
         }
-
-        habitat_yazdir(habitat);
-        j++;
+        }
+        
+        if (i >= habitat->satirSayisi - 1 && j >= habitat->sutunSayisi - 1) {
+        break;
     }
+        printf("\n");
+        
+    }habitat_yazdir(habitat);
+    
 }
 void habitat_sonucYazdir(struct HABITAT *habitat)
 {

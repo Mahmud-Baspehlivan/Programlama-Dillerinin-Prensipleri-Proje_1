@@ -9,7 +9,6 @@ struct SINEK {
 };
 
 char* sinek_gorunum(struct CANLI* canli);
-void sinek_hayatta_kal(struct CANLI* canli);
 void sinek_gorunum_degistir(struct CANLI* canli, GORUNUM_FONKSIYONU yeni_gorunum);
 struct SINEK* sinek_olustur(int deger);
 void sinek_sil(struct SINEK* sinek);

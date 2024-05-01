@@ -9,7 +9,6 @@ struct BITKI {
 };
 
 char* bitki_gorunum(struct CANLI* canli);
-void bitki_hayatta_kal(struct CANLI* canli);
 char* bitki_yenildi_gorunum(struct CANLI* canli);
 void bitki_gorunum_degistir(struct CANLI* canli, GORUNUM_FONKSIYONU yeni_gorunum);
 struct BITKI* bitki_olustur(int deger);

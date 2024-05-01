@@ -9,7 +9,7 @@ struct BOCEK {
 };
 
 char* bocek_gorunum(struct CANLI* canli);
-void bocek_hayatta_kal(struct CANLI* canli);
+void bocek_gorunum_degistir(struct CANLI* canli, GORUNUM_FONKSIYONU yeni_gorunum);
 struct BOCEK* bocek_olustur(int deger);
 void bocek_sil(struct BOCEK* bocek);
 
