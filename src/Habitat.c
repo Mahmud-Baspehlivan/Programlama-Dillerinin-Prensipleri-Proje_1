@@ -104,19 +104,17 @@ void habitat_yazdir(struct HABITAT *habitat)
 
 void habitat_surec(struct HABITAT* habitat) {
     int i = 0, j = 0, k = 0, z = 0;
+    struct CANLI* kazanan = NULL; // Kazananı temsil etmek için bir işaretçi
+    struct CANLI* canli1 = NULL;
+    struct CANLI* canli2 = NULL;
     while (i < habitat->satirSayisi && j < habitat->sutunSayisi) {
-        struct CANLI* canli1 = habitat->canlilar[k][z];
-        struct CANLI* canli2 = NULL;
+        canli1 = habitat->canlilar[k][z];
         if (j + 1 < habitat->sutunSayisi) {
             canli2 = habitat->canlilar[i][j + 1];
-            printf("%c(%i,%i)\n", canli1->gorunum, k, z);
-            printf("%c(%i,%i)\n", canli2->gorunum, i, j+1);
         } else if (i + 1 < habitat->satirSayisi) {
             i++;
             j = 0;
             canli2 = habitat->canlilar[i][j];
-            printf("%c(%i,%i)\n", canli1->gorunum, k, z);
-            printf("%c(%i,%i)\n", canli2->gorunum, i, j);
         }
         
         if (canli2 != NULL) {
@@ -197,98 +195,102 @@ void habitat_surec(struct HABITAT* habitat) {
                 }
             } else{
                     
-            if (canli1->gorunum == 'C') {
-                if (canli2->gorunum == 'B' || canli2->gorunum == 'P') {
-                    gorunum_degistir2(canli2, bitki_yenildi_gorunum);
-                    j++;
-                } else if (canli2->gorunum == 'S') {
-                    gorunum_degistir1(canli1, bitki_yenildi_gorunum);
-                    
-                    if(i == k){
+                if (canli1->gorunum == 'C') {
+                    if (canli2->gorunum == 'B' || canli2->gorunum == 'P') {
+                        gorunum_degistir2(canli2, bitki_yenildi_gorunum);
                         j++;
-                        z=j;
-                        canli1 = habitat->canlilar[k][z];
-                    }else if(j==0){
-                        k=i;
-                        z=j;
-                        canli1 = habitat->canlilar[k][z];
-                    } else{
-                        k=i;
-                        z=++j;
-                        canli1 = habitat->canlilar[k][z];
+                    } else if (canli2->gorunum == 'S') {
+                        gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                        
+                        if(i == k){
+                            j++;
+                            z=j;
+                            canli1 = habitat->canlilar[k][z];
+                        }else if(j==0){
+                            k=i;
+                            z=j;
+                            canli1 = habitat->canlilar[k][z];
+                        } else{
+                            k=i;
+                            z=++j;
+                            canli1 = habitat->canlilar[k][z];
+                        }
                     }
-                }
-            } else if (canli1->gorunum == 'B') {
-                if (canli2->gorunum == 'P' || canli2->gorunum == 'S') {
-                    gorunum_degistir2(canli2, bitki_yenildi_gorunum);
-                    j++;
-                } else if (canli2->gorunum == 'C') {
-                    gorunum_degistir1(canli1, bitki_yenildi_gorunum);
-                    if(i == k){
+                } else if (canli1->gorunum == 'B') {
+                    if (canli2->gorunum == 'P' || canli2->gorunum == 'S') {
+                        gorunum_degistir2(canli2, bitki_yenildi_gorunum);
                         j++;
-                        z=j;
-                        canli1 = habitat->canlilar[k][z];
-                    }else if(j==0){
-                        k=i;
-                        z=j;
-                        canli1 = habitat->canlilar[k][z];
-                    } else{
-                        k=i;
-                        z=++j;
-                        canli1 = habitat->canlilar[k][z];
+                    } else if (canli2->gorunum == 'C') {
+                        gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                        if(i == k){
+                            j++;
+                            z=j;
+                            canli1 = habitat->canlilar[k][z];
+                        }else if(j==0){
+                            k=i;
+                            z=j;
+                            canli1 = habitat->canlilar[k][z];
+                        } else{
+                            k=i;
+                            z=++j;
+                            canli1 = habitat->canlilar[k][z];
+                        }
                     }
-                }
-            } else if (canli1->gorunum == 'P') {
-                if (canli2->gorunum == 'C' || canli2->gorunum == 'B' || canli2->gorunum == 'S') {
-                    gorunum_degistir1(canli1, bitki_yenildi_gorunum);
-                    if(i == k){
+                } else if (canli1->gorunum == 'P') {
+                    if (canli2->gorunum == 'C' || canli2->gorunum == 'B' || canli2->gorunum == 'S') {
+                        gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                        if(i == k){
+                            j++;
+                            z=j;
+                            canli1 = habitat->canlilar[k][z];
+                        }else if(j==0){
+                            k=i;
+                            z=j;
+                            canli1 = habitat->canlilar[k][z];
+                        } else{
+                            k=i;
+                            z=++j;
+                            canli1 = habitat->canlilar[k][z];
+                        }
+                    }
+                } else if (canli1->gorunum == 'S') {
+                    if (canli2->gorunum == 'B') {
+                        gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                        if(i == k){
+                            j++;
+                            z=j;
+                            canli1 = habitat->canlilar[k][z];
+                        }else if(j==0){
+                            k=i;
+                            z=j;
+                            canli1 = habitat->canlilar[k][z];
+                        } else{
+                            k=i;
+                            z=++j;
+                            canli1 = habitat->canlilar[k][z];
+                        }
+                    } else if (canli2->gorunum == 'C' || canli2->gorunum == 'P') {
+                        gorunum_degistir2(canli2, bitki_yenildi_gorunum);
                         j++;
-                        z=j;
-                        canli1 = habitat->canlilar[k][z];
-                    }else if(j==0){
-                        k=i;
-                        z=j;
-                        canli1 = habitat->canlilar[k][z];
-                    } else{
-                        k=i;
-                        z=++j;
-                        canli1 = habitat->canlilar[k][z];
                     }
-                }
-            } else if (canli1->gorunum == 'S') {
-                if (canli2->gorunum == 'B') {
-                    gorunum_degistir1(canli1, bitki_yenildi_gorunum);
-                    if(i == k){
-                        j++;
-                        z=j;
-                        canli1 = habitat->canlilar[k][z];
-                    }else if(j==0){
-                        k=i;
-                        z=j;
-                        canli1 = habitat->canlilar[k][z];
-                    } else{
-                        k=i;
-                        z=++j;
-                        canli1 = habitat->canlilar[k][z];
-                    }
-                } else if (canli2->gorunum == 'C' || canli2->gorunum == 'P') {
-                    gorunum_degistir2(canli2, bitki_yenildi_gorunum);
-                    j++;
                 }
             }
-            
-        }
+           
         }
         
         if (i >= habitat->satirSayisi - 1 && j >= habitat->sutunSayisi - 1) {
         break;
     }
-        printf("\n");
         
-    }habitat_yazdir(habitat);
+    }
+    system(CLEAR_SCREEN);
+    habitat_yazdir(habitat);
+    if(canli1->gorunum == 'X'){
+        kazanan = canli2;
+        printf("%s,%c (%i,%i)\n", "Kazanan: ",canli2->gorunum, i, j+1);
+    }else if(canli2->gorunum == 'X'){
+        kazanan = canli1;
+        printf("%s%c (%i,%i)\n", "Kazanan: ",canli1->gorunum, k, z);
+    }
     
-}
-void habitat_sonucYazdir(struct HABITAT *habitat)
-{
-    // Buraya sonuc yazdirma kodunu yazabilirsiniz
 }

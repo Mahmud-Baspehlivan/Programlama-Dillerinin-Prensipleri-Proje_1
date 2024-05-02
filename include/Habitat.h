@@ -14,6 +14,5 @@ void habitat_baslat(struct HABITAT* habitat);
 void habitat_doldur(struct HABITAT* habitat, char* dosyaAdi);
 void habitat_yazdir(struct HABITAT* habitat);
 void habitat_surec(struct HABITAT* habitat);
-void habitat_sonucYazdir(struct HABITAT* habitat);
 
 #endif

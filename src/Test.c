@@ -9,7 +9,7 @@ int main() {
     habitat_doldur(&habitat, "./doc/Veri.txt");
 
     printf("Baslangic durumu:\n");
-    //habitat_yazdir(&habitat);
+    habitat_yazdir(&habitat);
 
     printf("\nSurec baslatiliyor... (Herhangi bir tusa basin)\n");
     getchar();
