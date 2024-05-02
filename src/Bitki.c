@@ -4,20 +4,12 @@
 #include <stdlib.h>
 
 char* bitki_gorunum(struct CANLI* canli) {
-        return "B";
-}
-
-char* bitki_yenildi_gorunum(struct CANLI* canli) {
-        return "X";
-}
-
-void bitki_gorunum_degistir(struct CANLI* canli, GORUNUM_FONKSIYONU yeni_gorunum) {
-    canli->gorunum = (*yeni_gorunum)(canli)[0];
+    return "B";
 }
 
 struct BITKI* bitki_olustur(int deger) {
     struct BITKI* bitki = malloc(sizeof(struct BITKI));
-    bitki->canli = *canli_olustur(deger, bitki_gorunum, bitki_gorunum_degistir);
+    bitki->canli = *canli_olustur(deger, bitki_gorunum);
     return bitki;
 }
 

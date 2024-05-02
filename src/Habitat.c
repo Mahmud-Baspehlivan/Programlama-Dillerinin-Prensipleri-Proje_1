@@ -118,9 +118,7 @@ void habitat_surec(struct HABITAT* habitat) {
         }
         
         if (canli2 != NULL) {
-            void (*gorunum_degistir1)(struct CANLI*, GORUNUM_FONKSIYONU) = canli1->gorunum_degistir;
-            void (*gorunum_degistir2)(struct CANLI*, GORUNUM_FONKSIYONU) = canli2->gorunum_degistir;
-
+            
             if (canli1->gorunum == canli2->gorunum) {
                 // Karşılaşan karakterler aynı ise, veri.txt'deki sayısal değeri büyük olan kazanır
                 // Eğer sayısal değerler eşitse, matrisin son elemanına olan uzaklıklara bakılarak daha yakın olan ölecek
@@ -128,10 +126,10 @@ void habitat_surec(struct HABITAT* habitat) {
                 int canli2_sayi = canli2->deger;
 
                 if (canli1_sayi > canli2_sayi) {
-                    gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                    canli2->gorunum = 'X';
                     j++;
                 } else if (canli1_sayi < canli2_sayi) {
-                    gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                    canli1->gorunum = 'X';
                     if(i == k){
                         j++;
                         z=j;
@@ -153,7 +151,7 @@ void habitat_surec(struct HABITAT* habitat) {
                     int uzaklik_canli2 = abs(i - son_satir) + abs(j - son_sutun);
 
                     if (uzaklik_canli1 < uzaklik_canli2) {
-                        gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                        canli1->gorunum = 'X';
                         if(i == k){
                             j++;
                             z=j;
@@ -168,12 +166,12 @@ void habitat_surec(struct HABITAT* habitat) {
                             canli1 = habitat->canlilar[k][z];
                         }
                     } else if (uzaklik_canli1 > uzaklik_canli2) {
-                        gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                        canli2->gorunum = 'X';
                         j++;
                     } else {
                         // Eğer uzaklıklar da eşitse, yatay konumlarına bakarak hangisi daha aşağıda ise onun ölmesini sağla
                         if (i > k) {
-                            gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                            canli1->gorunum = 'X';
                             if(i == k){
                                 j++;
                                 z=j;
@@ -188,7 +186,7 @@ void habitat_surec(struct HABITAT* habitat) {
                                 canli1 = habitat->canlilar[k][z];
                             }
                         } else {
-                            gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                            canli2->gorunum = 'X';
                             j++;
                         }
                     }
@@ -197,10 +195,10 @@ void habitat_surec(struct HABITAT* habitat) {
                     
                 if (canli1->gorunum == 'C') {
                     if (canli2->gorunum == 'B' || canli2->gorunum == 'P') {
-                        gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                        canli2->gorunum = 'X';
                         j++;
                     } else if (canli2->gorunum == 'S') {
-                        gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                        canli1->gorunum = 'X';
                         
                         if(i == k){
                             j++;
@@ -218,10 +216,10 @@ void habitat_surec(struct HABITAT* habitat) {
                     }
                 } else if (canli1->gorunum == 'B') {
                     if (canli2->gorunum == 'P' || canli2->gorunum == 'S') {
-                        gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                        canli2->gorunum = 'X';
                         j++;
                     } else if (canli2->gorunum == 'C') {
-                        gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                        canli1->gorunum = 'X';
                         if(i == k){
                             j++;
                             z=j;
@@ -238,7 +236,7 @@ void habitat_surec(struct HABITAT* habitat) {
                     }
                 } else if (canli1->gorunum == 'P') {
                     if (canli2->gorunum == 'C' || canli2->gorunum == 'B' || canli2->gorunum == 'S') {
-                        gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                        canli1->gorunum = 'X';
                         if(i == k){
                             j++;
                             z=j;
@@ -255,7 +253,7 @@ void habitat_surec(struct HABITAT* habitat) {
                     }
                 } else if (canli1->gorunum == 'S') {
                     if (canli2->gorunum == 'B') {
-                        gorunum_degistir1(canli1, bitki_yenildi_gorunum);
+                        canli1->gorunum = 'X';
                         if(i == k){
                             j++;
                             z=j;
@@ -270,7 +268,7 @@ void habitat_surec(struct HABITAT* habitat) {
                             canli1 = habitat->canlilar[k][z];
                         }
                     } else if (canli2->gorunum == 'C' || canli2->gorunum == 'P') {
-                        gorunum_degistir2(canli2, bitki_yenildi_gorunum);
+                        canli2->gorunum = 'X';
                         j++;
                     }
                 }
