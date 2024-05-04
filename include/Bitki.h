@@ -9,7 +9,6 @@ struct BITKI {
 };
 
 char* bitki_gorunum(struct CANLI* canli);
-char* bitki_yenildi_gorunum(struct CANLI* canli);
 struct BITKI* bitki_olustur(int deger);
 void bitki_sil(struct BITKI* bitki);
 

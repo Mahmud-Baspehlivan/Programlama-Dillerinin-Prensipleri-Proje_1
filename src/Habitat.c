@@ -14,6 +14,11 @@
 #define CLEAR_SCREEN "clear"
 #endif
 
+struct CANLI* kazanan = NULL; // Kazananı temsil etmek için bir işaretçi
+struct CANLI* canli1 = NULL;
+struct CANLI* canli2 = NULL;
+int i = 0, j = 0, k = 0, z = 0;
+
 void habitat_baslat(struct HABITAT *habitat)
 {
     habitat->satirSayisi = 0;
@@ -103,10 +108,7 @@ void habitat_yazdir(struct HABITAT *habitat)
 }
 
 void habitat_surec(struct HABITAT* habitat) {
-    int i = 0, j = 0, k = 0, z = 0;
-    struct CANLI* kazanan = NULL; // Kazananı temsil etmek için bir işaretçi
-    struct CANLI* canli1 = NULL;
-    struct CANLI* canli2 = NULL;
+    
     while (i < habitat->satirSayisi && j < habitat->sutunSayisi) {
         canli1 = habitat->canlilar[k][z];
         if (j + 1 < habitat->sutunSayisi) {
@@ -281,14 +283,31 @@ void habitat_surec(struct HABITAT* habitat) {
     }
         
     }
-    system(CLEAR_SCREEN);
-    habitat_yazdir(habitat);
     if(canli1->gorunum == 'X'){
-        kazanan = canli2;
-        printf("%s,%c (%i,%i)\n", "Kazanan: ",canli2->gorunum, i, j+1);
+        kazanan = canli2;  
     }else if(canli2->gorunum == 'X'){
         kazanan = canli1;
-        printf("%s%c (%i,%i)\n", "Kazanan: ",canli1->gorunum, k, z);
     }
+
+    for (int i = 0; i < habitat->satirSayisi; i++) {
+        for (int j = 0; j < habitat->sutunSayisi; j++) {
+            if (habitat->canlilar[i][j] != kazanan) {
+                habitat->canlilar[i][j]->gorunum = 'X';
+            }
+        }
+    }
+
+    system(CLEAR_SCREEN);
+    habitat_yazdir(habitat);
     
+}
+
+void habitat_sonuc(struct HABITAT* habitat){
+    if (kazanan) {
+        if (kazanan == canli2) {
+            printf("%s,%c (%i,%i)\n", "Kazanan: ", canli2->gorunum, i, j + 1);
+        } else {
+            printf("%s%c (%i,%i)\n", "Kazanan: ", canli1->gorunum, k, z);
+        }
+    }
 }
